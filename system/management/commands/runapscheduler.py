@@ -45,12 +45,12 @@ def my_job():
                                                       permissions=','.join(obj['permissions']), name=obj['name'])
                     except:
                         File.objects.filter(id=obj['id']).update(permissions=','.join(obj['permissions']), name=obj['name'])
-                    if 'adduser 'in obj:
-                        for i in obj['adduser']:
+                    if 'adduser' in obj.keys():
+                        for j in obj['adduser']:
                             send_mail1(
-                                to_emails=Users.objects.filter(username=i)[0].email,
+                                to_emails=Users.objects.filter(username=j)[0].email,
                                 textMessage=('/').join(obj['virtual_path'])+"下文件已更新",
-                                subject='文件更新',
+                                subject='文件更新'
                                 )
             elif i.tasksType == "account":
                 if obj['role']:
@@ -68,7 +68,6 @@ def my_job():
                     avatar=obj['avatar'],
                     gender=obj['gender']
                 )
-
             ScheduledTasks.objects.get(id=i.id).delete()
         elif approveInstance(i.instanceId) == "refuse":
             ScheduledTasks.objects.get(id=i.id).delete()

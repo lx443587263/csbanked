@@ -36,6 +36,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from typing import List
 from pikepdf import Pdf, Page, Rectangle
+import uuid
 
 lock = Lock()
 
@@ -99,6 +100,7 @@ def upload(request, file: UploadedFile = NinjaFile(...)):
         'size': file.size,
         'save_name': file_name,
         'url': file_url,
+        'virtual_path':uuid.uuid4(),
     }
     qs = create(request, data, File)
     return qs

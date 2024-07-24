@@ -150,11 +150,25 @@ def sendMessage(email):  # 发送邮件并返回验证码
         rand_str += str1[random.randrange(0, len(str1))]
     # 发送邮件：
     # send_mail的参数分别是  邮件标题，邮件内容，发件箱(settings.py中设置过的那个)，收件箱列表(可以发送给多个人),失败静默(若发送失败，报错提示我们)
-    message = "您的验证码是" + rand_str + "，10分钟内有效，请尽快填写"
+    # message = R"您的验证码是" + rand_str + "，10分钟内有效，请尽快填写!\n"
+    message = r'''正和微芯的合作伙伴：
+
+您好！
+
+您的验证码为：%s
+
+* 验证码有效期为10分钟
+* 如果非本人操作请忽略
+* 此邮件为系统自动发送，请勿自动回复
+        
+顺颂商祺
+
+珠海正和微芯科技有限公司
+''' % (rand_str)
     # emailBox = []
     # emailBox.append(email)
     # ali_send_email('noreply@possumic.com', 'Nrpy@i5i6#24', email, message)
-    send_mail1(to_emails=email,textMessage=message)
+    send_mail1(subject="您的验证码为" + rand_str ,to_emails=email,textMessage=message)
     # send_mail('怪奇物语', message, 'noreply@possumic.com', emailBox, fail_silently=False)
     return rand_str
 
@@ -329,8 +343,8 @@ def get_signature(method, data, accessSecret):
 
 def send_mail1(
     to_emails,
+    subject,
     textMessage,
-    subject='验证码',
     from_email='noreply@cs.possumic.com',
     accessKeyId='LTAI5tPdvFJ3KKsDjei8vdK7',
     accessSecret='95tUETsSGpa4rr1hwHGE7bYssDRVan',
@@ -342,8 +356,9 @@ def send_mail1(
     data = {
         'Action': 'SingleSendMail',
         'AccountName': from_email,
+        'FromAlias' :'珠海正和微芯',
         'AddressType': '1',
-        'ReplyToAddress': 'true',
+        'ReplyToAddress': 'false',
         'Subject': subject,
         'ToAddress': to_emails,
         'ClickTrace': '1',
