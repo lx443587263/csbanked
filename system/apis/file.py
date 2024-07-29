@@ -37,6 +37,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from typing import List
 from pikepdf import Pdf, Page, Rectangle
 import uuid
+import hashlib
+
 
 lock = Lock()
 
@@ -86,6 +88,7 @@ def all_list_role(request):
 @router.post("/upload", response=SchemaOut)
 def upload(request, file: UploadedFile = NinjaFile(...)):
     binary_data = file.read()
+    file_md5 = hashlib.md5(binary_data).hexdigest()
     current_date = datetime.now().strftime('%Y%m%d%H%M%S%f')
     current_ymd = datetime.now().strftime('%Y%m%d')
     file_name = current_date + '_' + file.name.replace(' ', '_')
@@ -101,6 +104,7 @@ def upload(request, file: UploadedFile = NinjaFile(...)):
         'save_name': file_name,
         'url': file_url,
         'virtual_path':uuid.uuid4(),
+        'md5sum':file_md5,
     }
     qs = create(request, data, File)
     return qs

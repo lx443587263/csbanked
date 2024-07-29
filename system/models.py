@@ -327,8 +327,8 @@ class File(CoreModel):
     md5sum = models.CharField(max_length=36, blank=True, verbose_name="文件md5", help_text="文件md5")
     permissions = models.CharField(max_length=512, blank=True, verbose_name="下载权限", help_text="权限",
                                    default="superadmin")
+    status = models.BooleanField(default=False);
     virtual_path = models.CharField(max_length=512, blank=True, verbose_name="虚拟路径", help_text="虚拟路径",unique=True)
-
     class Meta:
         db_table = 'system_file'
         verbose_name = '文件管理'

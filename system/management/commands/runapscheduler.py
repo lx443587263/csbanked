@@ -49,7 +49,18 @@ def my_job():
                         for j in obj['adduser']:
                             send_mail1(
                                 to_emails=Users.objects.filter(username=j)[0].email,
-                                textMessage=('/').join(obj['virtual_path'])+"下文件已更新",
+                                textMessage=r'''正和微芯的合作伙伴：
+
+您好！
+
+您有新的内容可以下载：
+%s
+
+        
+顺颂商祺
+
+珠海正和微芯科技有限公司
+''' % (('/').join(obj['virtual_path'])),
                                 subject='文件更新'
                                 )
             elif i.tasksType == "account":
@@ -68,6 +79,8 @@ def my_job():
                     avatar=obj['avatar'],
                     gender=obj['gender']
                 )
+            elif i.tasksType == "file":
+                File.objects.filter(md5sum=obj['md5sum']).update(status=True)
             ScheduledTasks.objects.get(id=i.id).delete()
         elif approveInstance(i.instanceId) == "refuse":
             ScheduledTasks.objects.get(id=i.id).delete()

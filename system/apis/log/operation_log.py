@@ -17,6 +17,8 @@ router = Router()
 
 class Filters(FuFilters):
     request_username: str = Field(None, alias="request_username")
+    request_method: str = Field(None, alias="request_method")
+    request_path: str = Field(None, alias="request_path")
     id: str = Field(None, alias="operation_log_id")
 
 
